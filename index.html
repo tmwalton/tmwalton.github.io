@@ -1,0 +1,112 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+		<style type="text/css">
+		.cards {
+			margin-top: 100px;
+		}
+		.card {
+			border: 1px black solid;
+			min-width: 100px;
+			float: left;
+			position: relative;
+		}
+		.blue {
+			background-color: blue;
+		}
+		.prev2 {
+			right: -25px;
+			height: 100px;
+			top: 50px;
+			z-index: 1;
+		}
+		.red {
+			background-color: red;
+		}
+		.prev {
+			top: 25px;
+			height: 150px;
+			z-index: 2;
+		}
+		.yellow {
+			background-color: yellow;
+		}
+		.active {
+			z-index: 3;
+			height: 200px;
+			width: 150px
+		}
+		.black {
+			background-color: black;
+		}
+		.next {
+			z-index: 2;
+			height: 150px;
+			top: 25px;
+		}
+		.green {
+			background-color: green;
+		}
+		.next2 {
+			left: -25px;
+			z-index: 1;
+			height: 100px;
+			top: 50px;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="cards">
+			<div class="card blue prev2"></div>
+			<div class="card red prev"></div>
+			<div class="card yellow active"></div>
+			<div class="card black next"></div>
+			<div class="card green next2"></div>
+		</div>
+	    <script src="poc_files/jquery-2.js"></script>
+	    <script src="poc_files/hammer.js"></script>
+	    <script type="text/javascript">
+		    var changeClass = function(element, oldClass, newClass){
+		    	element.removeClass(oldClass);
+		    	element.addClass(newClass);
+		    };
+
+	    	var active = document.getElementsByClassName('active')[0];
+	    	var hammer = new Hammer(active);
+    		var prevDistance = 0,
+    			keepMoving = true;
+	    	hammer.on('panleft panright panend', function (ev) {
+	    		if(ev.type === 'panright') {
+	    			if(keepMoving) {
+		    			var startingValue = (parseInt(active.style.right) * -1) || 0;
+		    			var delta = ev.distance - prevDistance;
+//		    			console.log('delta is ' + delta);
+		    			prevDistance = ev.distance;
+		    			active.style.right = ((startingValue + delta) * -1) + "px";
+//		    			console.log('moving right ' + active.style.right);
+	    				keepMoving = prevDistance < 100;
+	    			}
+	    		} else if(ev.type === 'panend') {
+	    			if(prevDistance < 50) {
+	    				active.style.right = "0px";
+	    				prevDistance = 0;
+	    			} else {
+	    				hammer.off('panleft panright panend');
+	    				hammer.destroy();
+	    				active.style.right = "0px";
+	    				var prev = $('.prev')
+	    				active = $('.active');
+	    				var next = $('.next');
+	    				var next2 = $('.next2');
+	    				var prev2 = $('.prev2');
+	    				changeClass(prev2, 'prev2', 'prev');
+	    				changeClass(prev, 'prev', 'active');
+	    				changeClass(active, 'active', 'next');
+	    				changeClass(next, 'next', 'next2');
+	    				next2.remove();
+	    				prev2.css('margin-left', "100px");
+	    			}
+	    		}
+	    	});
+	    </script>
+	
+</body></html>
