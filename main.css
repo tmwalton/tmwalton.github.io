@@ -1,0 +1,38 @@
+body {
+    background: gray;
+}
+
+button {
+    height: 50px;
+    width: 100px;
+    margin: 0 auto;
+    display: block;
+    font-size: 20px;
+    border: 2px solid black;
+    border-radius: 30px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+span {
+    cursor: default;
+    color: white;
+    font-size: 170px;
+    margin: 0 auto;
+}
+
+.containers {
+    margin: 0 auto;
+    height:150px;
+    width: 510px;
+}
+
+.squares {
+    text-align: center;
+    height: 150px;
+    width: 150px;
+    background: red;
+    float: left;
+    margin: 10px;
+
+}
