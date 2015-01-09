@@ -1,5 +1,5 @@
 body {
-    background: gray;
+    background: #4488FC;
 }
 
 button {
@@ -31,7 +31,7 @@ span {
     text-align: center;
     height: 150px;
     width: 150px;
-    background: red;
+    background: white;
     float: left;
     margin: 10px;
 
