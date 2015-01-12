@@ -18,7 +18,8 @@ span {
     cursor: default;
     color: white;
     font-size: 160px;
-    margin: 0 auto;
+    text-align: center;
+    line-height: 150px;
 }
 
 .containers {
