@@ -1,5 +1,20 @@
 var player = 0;
-var resultsMatrix = {};
+var winningPlayer = '';
+var results = { '0-0':'', '0-1':'', '0-2':'',
+                '1-0':'', '1-1':'', '1-2':'',
+                '2-0':'', '2-1':'', '2-2':'',};
+
+var doesPlayerWin = function(){
+  if(winningPlayer != ''){
+    alert("Player " + winningPlayer + " wins!");
+    $(".squares").unbind("click");
+  }
+};
+
+var tieGame = function(){
+  alert("The game is a tie!");
+  $(".squares").unbind("click");
+};
 
 $(document).ready(function(){
 
@@ -7,134 +22,77 @@ $(document).ready(function(){
         window.location.reload();
     });
 
-
     $(".squares").on("click", function(){
 
         if(player == 0){
             $(this).css({"background": "black"});
             $(this).children("span").text("X");
             $(this).unbind("click");
-            resultsMatrix[$(this).attr("id")] = "X";
-            player = 1;
+            results[$(this).attr("id")] = "X";
+            player = 1;}
 
-        } else {
+        else {
 
             $(this).css({"background": "blue"});
             $(this).children("span").text("O");
             $(this).unbind("click");
-            resultsMatrix[$(this).attr("id")] = "O";
-            player = 0;
-        }
+            results[$(this).attr("id")] = "O";
+            player = 0;}
 
+        console.log(results);
 
-        console.log(resultsMatrix);
+        // Evaluate horizontal win conditions
+        if     (results['0-0'] == results['0-1'] && results['0-1'] == results['0-2'] && results['0-0'] != ''){
+          winningPlayer = results['0-0'];
+          doesPlayerWin();}
 
-        // These conditions trigger a win message
+        else if(results['1-0'] == results['1-1'] && results['1-1'] == results['1-2'] && results['1-0'] != ''){
+          winningPlayer = results['1-0'];
+          doesPlayerWin();}
 
-        if(resultsMatrix.square1 == "X" && resultsMatrix.square2 == "X" && resultsMatrix.square3 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
+        else if(results['2-0'] == results['2-1'] && results['2-1'] == results['2-2'] && results['2-0'] != ''){
+          winningPlayer = results['2-0'];
+          doesPlayerWin();}
 
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square2 == "O" && resultsMatrix.square3 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
+        // Evaluate vertical win conditions
+        else if(results['0-0'] == results['1-0'] && results['1-0'] == results['2-0'] && results['0-0'] != ''){
+          winningPlayer = results['0-0'];
+          doesPlayerWin();}
 
-        else if(resultsMatrix.square4 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square6 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
+        else if(results['0-1'] == results['1-1'] && results['1-1'] == results['2-1'] && results['0-1'] != ''){
+          winningPlayer = results['0-1'];
+          doesPlayerWin();}
 
-        else if(resultsMatrix.square4 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square6 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
+        else if(results['0-2'] == results['1-2'] && results['1-2'] == results['2-2'] && results['0-2'] != ''){
+          winningPlayer = results['0-2'];
+          doesPlayerWin();}
 
-        else if(resultsMatrix.square7 == "X" && resultsMatrix.square8 == "X" && resultsMatrix.square9 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
+        // Evaluate diagonal win conditions
+        else if(results['0-0'] == results['1-1'] && results['1-1'] == results['2-2'] && results['0-0'] != ''){
+          winningPlayer = results['0-0'];
+          doesPlayerWin();}
 
-        else if(resultsMatrix.square7 == "O" && resultsMatrix.square8 == "O" && resultsMatrix.square9 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
+        else if(results['2-0'] == results['1-1'] && results['1-1'] == results['0-2'] && results['2-0'] != ''){
+          winningPlayer = results['2-0'];
+          doesPlayerWin();}
 
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square4 == "X" && resultsMatrix.square7 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
+        // Evaluate tie conditions
+        else if((results['0-2'] == results['1-0'] && results['1-0'] == results['2-1'] && results['2-1'] == results['2-2'] && results['0-2'] != '') ||
+                (results['0-1'] == results['1-0'] && results['1-0'] == results['2-0'] && results['2-0'] == results['2-2'] && results['0-1'] != '') ||
+                (results['0-0'] == results['0-2'] && results['0-2'] == results['1-2'] && results['1-2'] == results['2-0'] && results['2-0'] == results['2-1'] && results['0-0'] != '') ||
+                (results['0-0'] == results['0-1'] && results['0-1'] == results['1-1'] && results['1-1'] == results['1-2'] && results['1-2'] == results['2-0'] && results['0-0'] != '') ||
+                (results['0-0'] == results['0-2'] && results['0-2'] == results['1-1'] && results['1-1'] == results['1-2'] && results['1-2'] == results['2-1'] && results['0-0'] != '') ||
+                (results['0-0'] == results['0-2'] && results['0-2'] == results['1-0'] && results['1-0'] == results['1-2'] && results['1-2'] == results['2-1'] && results['0-0'] != '') ||
+                (results['0-0'] == results['0-2'] && results['0-2'] == results['1-1'] && results['1-1'] == results['1-2'] && results['1-2'] == results['2-1'] && results['0-0'] != '') ||
+                (results['0-1'] == results['1-0'] && results['1-0'] == results['1-2'] && results['1-2'] == results['2-0'] && results['2-0'] == results['2-2'] && results['0-1'] != '') ||
+                (results['0-0'] == results['0-1'] && results['0-1'] == results['1-2'] && results['1-2'] == results['2-0'] && results['2-0'] == results['2-1'] && results['0-0'] != '') ||
+                (results['0-0'] == results['0-1'] && results['0-1'] == results['1-2'] && results['1-2'] == results['2-0'] && results['2-0'] == results['2-2'] && results['0-0'] != '') ||
+                (results['0-0'] == results['1-1'] && results['1-1'] == results['1-2'] && results['1-2'] == results['2-0'] && results['2-0'] == results['2-1'] && results['0-0'] != '')){
 
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square4 == "O" && resultsMatrix.square7 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
+                  tieGame();
 
-        else if(resultsMatrix.square2 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square8 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
+               };
 
-        else if(resultsMatrix.square2 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square8 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square3 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square9 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square3 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square9 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square9 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square9 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square7 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square3 == "X"){
-            alert("Player X Wins!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square7 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square3 == "O"){
-            alert("Player O Wins!!!"); $(".squares").unbind("click");}
-
-        // These conditions trigger a tied game message
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square2 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square7 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square2 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square7 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square3 == "X" && resultsMatrix.square4 == "X" && resultsMatrix.square8 == "X" && resultsMatrix.square9 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square3 == "O" && resultsMatrix.square4 == "O" && resultsMatrix.square8 == "O" && resultsMatrix.square9 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square3 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square8 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square3 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square8 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square2 == "X" && resultsMatrix.square4 == "X" && resultsMatrix.square7 == "X" && resultsMatrix.square9 == "X"){
-            alert("The game is a tie!!!"); $(this).unbind("click");}
-
-        else if(resultsMatrix.square2 == "O" && resultsMatrix.square4 == "O" && resultsMatrix.square7 == "O" && resultsMatrix.square9 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square3 == "X" && resultsMatrix.square4 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square8 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square3 == "O" && resultsMatrix.square4 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square8 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square2 == "X" && resultsMatrix.square4 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square7 == "X" && resultsMatrix.square9 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square2 == "O" && resultsMatrix.square4 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square7 == "O" && resultsMatrix.square9 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square2 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square7 == "X" && resultsMatrix.square8 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square2 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square7 == "O" && resultsMatrix.square8 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square2 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square7 == "X" && resultsMatrix.square9 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square2 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square7 == "O" && resultsMatrix.square9 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "O" && resultsMatrix.square5 == "O" && resultsMatrix.square6 == "O" && resultsMatrix.square7 == "O" && resultsMatrix.square8 == "O"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-        else if(resultsMatrix.square1 == "X" && resultsMatrix.square5 == "X" && resultsMatrix.square6 == "X" && resultsMatrix.square7 == "X" && resultsMatrix.square8 == "X"){
-            alert("The game is a tie!!!"); $(".squares").unbind("click");}
-
-    });
+      });
 
 });
